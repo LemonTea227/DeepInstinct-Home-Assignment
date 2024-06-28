@@ -1,5 +1,5 @@
-from ServerActions import ServerActions
-from MyLogger import MyLogger
+from server.server_actions import ServerActions
+from my_logger import MyLogger
 
 
 def main():
@@ -12,13 +12,14 @@ def main():
         try:
             while not done:
                 logger.info("Receiving a command from the client")
-                str_message: str = server_actions.receive_client_request()  # type: ignore
+                str_message: str = server_actions.receive_client_request() # type: ignore
                 response = server_actions.handle_client_request(str_message)
 
-                if response == 'EXIT':
+                if response == "EXIT":
                     done = True
                     server_actions.send_response_to_client(
-                        "disconnecting you \nGOODBYE!!!")
+                        "disconnecting you \nGOODBYE!!!"
+                    )
                     logger.info("Disconnecting the client from the server")
                     server_actions.client_socket.close()
                 else:
@@ -33,6 +34,6 @@ def main():
             main()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     logger = MyLogger()
     main()

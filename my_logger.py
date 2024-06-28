@@ -5,12 +5,13 @@ from typing import Callable
 
 def add_start_time(func):
     def wrapper(*args, **kwargs):
-        start_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        start_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         if len(args) > 1:
             original_msg = args[1]
             new_msg = f"[{start_time}] {original_msg}"
             args = (args[0], new_msg) + args[2:]
         return func(*args, **kwargs)
+
     return wrapper
 
 
@@ -39,16 +40,14 @@ class MyLogger:
     def critical(self, msg):
         self.logger.critical(msg)
 
-    def add_exit_msg(self, exit_msg: str | None = None):
-        def log_function(origin_function: Callable):
-            def func(*args, **kwargs):
-                function_name = origin_function.__name__
-                self.info(f"---- Function {function_name} Enter ----")
-                result = origin_function(*args, **kwargs)
-                self.info(
-                    f"---- Function {function_name} Exit {' - ' + exit_msg if exit_msg else ''} ----")
-                return result
+    def log_function(self, origin_function: Callable):
+        def func(*args, **kwargs):
+            function_name = origin_function.__name__
+            self.info(f"---- Function {function_name} Enter ----")
+            result = origin_function(*args, **kwargs)
+            self.info(
+                f"---- Function {function_name} Exit ----"
+            )
+            return result
 
-            return func
-
-        return log_function
+        return func
